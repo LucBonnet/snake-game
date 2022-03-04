@@ -11,7 +11,7 @@ const snake = {
   positions: [],
   size: 2,
   direction: [1, 0],
-  speed: 1000,
+  speed: 60,
 };
 
 const apple = {
