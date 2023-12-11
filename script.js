@@ -11,7 +11,7 @@ const snake = {
   positions: [],
   size: 2,
   direction: [1, 0],
-  speed: 60,
+  speed: 25,
 };
 
 const apple = {
@@ -36,7 +36,7 @@ function setup() {
 
   generateApple();
 
-  interval = setInterval(update, snake.speed);
+  // interval = setInterval(update, snake.speed);
 }
 
 function update() {
@@ -46,8 +46,16 @@ function update() {
   ctx.fillStyle = snake.color;
   ctx.fillRect(snake.x, snake.y, snake.scale, snake.scale);
 
-  snake.positions.forEach((position) => {
-    ctx.fillStyle = snake.color;
+  snake.positions.forEach((position, index) => {
+    const numPositions = snake.positions.length;
+    const green = [0, 255, 0];
+    const blue = [0, 0, 255];
+    const greenP =  index / numPositions;
+    const blueP = 1 - greenP;
+    const r = 0;
+    const g = green[1] * greenP + blue[1] * blueP;
+    const b = green[2] * greenP + blue[2] * blueP;
+    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
     ctx.fillRect(position[0], position[1], snake.scale, snake.scale);
   });
 
@@ -85,6 +93,10 @@ function update() {
   } else {
     snake.y = snake.y + snake.direction[1] * snake.scale;
   }
+
+  setTimeout(() => {
+    requestAnimationFrame(update);
+  }, 1000 / snake.speed);
 }
 
 function resetCanvas() {
@@ -155,3 +167,4 @@ function eat() {
 }
 
 setup();
+update();
