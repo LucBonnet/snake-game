@@ -26,12 +26,13 @@ const boardH = Math.floor(h / snake.scale);
 document.querySelector(
   "body"
 ).innerHTML = `<canvas id="canvas" width=${w} height=${h}></canvas>`;
+
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 
 function setup() {
   snake.x = Math.floor(boardW / 4) * snake.scale - snake.scale;
-  snake.y = (boardH / 2) * snake.scale - snake.scale;
+  snake.y = Math.floor(boardH / 2) * snake.scale - snake.scale;
 
   generateApple();
 
@@ -40,6 +41,7 @@ function setup() {
 
 function update() {
   resetCanvas();
+  gameOver();
 
   ctx.fillStyle = snake.color;
   ctx.fillRect(snake.x, snake.y, snake.scale, snake.scale);
@@ -83,8 +85,6 @@ function update() {
   } else {
     snake.y = snake.y + snake.direction[1] * snake.scale;
   }
-
-  gameOver();
 }
 
 function resetCanvas() {
@@ -102,8 +102,9 @@ function generateApple() {
   } while (JSON.stringify(snake.positions).includes(JSON.stringify([x, y])));
 
   apple.position = [x, y];
+  console.log(apple)
+  console.log(snake)
 }
-
 document.addEventListener("keydown", (evt) => {
   const event = events[evt.code];
 
@@ -135,7 +136,8 @@ const events = {
 function gameOver() {
   if (
     JSON.stringify(snake.positions).includes(JSON.stringify([snake.x, snake.y]))
-  ) {
+    ) {
+    console.log(snake.positions, snake.x, snake.y);
     clearInterval(interval);
     alert("Game Over");
     snake.x = 0;
